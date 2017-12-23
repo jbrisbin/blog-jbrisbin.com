@@ -28,6 +28,7 @@ module.exports = class HTML extends React.Component {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           {this.props.headComponents}
           {css}
+          <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
         </head>
         <body {...this.props.bodyAttributes}>
           {this.props.preBodyComponents}
@@ -38,6 +39,17 @@ module.exports = class HTML extends React.Component {
             dangerouslySetInnerHTML={{ __html: this.props.body }}
           />
           {this.props.postBodyComponents}
+          <script>
+            {if (window.netlifyIdentity) {
+              window.netlifyIdentity.on("init", function(user) {
+                if (!user) {
+                  window.netlifyIdentity.on("login", function () {
+                    document.location.href = "/admin/index.html";
+                  });
+                }
+              })
+            }}
+          </script>
         </body>
       </html>
     );
